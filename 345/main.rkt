@@ -7,7 +7,7 @@
     [(_ x) x]
     [(_ x f rest ...) (~> (f x) rest ...)]))
 
-(define (gvector-add vec x) (gvector-add! vec x) vec)
+(define (gvector-add vec x) (begin0 vec (gvector-add! vec x)))
 
 (define-values (vowels VOWELS)
   (values '(#\a #\e #\i #\o #\u)
