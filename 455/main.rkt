@@ -1,4 +1,4 @@
-#lang racket
+#lang errortrace racket
 
 (define ≤ <=)
 (define ≥ >=)
@@ -40,4 +40,4 @@
 
 ;; (find-content-children '(1 2 3) '())
 
-(find-content-children '(10 9 8 7) '(5 6 7 8))
+;; (find-content-children '(10 9 8 7) '(5 6 7 8))
