@@ -1,4 +1,4 @@
-#lang errortrace racket
+#lang racket
 
 (require racket/match)
 
@@ -17,30 +17,23 @@
     (list->vector row)))
 
 (define* (triangle-ref triangle [list i j])
-  (vector-ref (vector-ref triangle i) j))
+  (vector-ref (list-ref triangle i) j))
 
 (define* (triangle-set! triangle [list i j] value)
-  (vector-set! (vector-ref triangle i) j value))
+  (vector-set! (list-ref triangle i) j value))
 
 (define/contract (minimum-total triangle-list)
   (-> (listof (listof exact-integer?)) exact-integer?)
 
   (define triangle (triangle-list->triangle-vector triangle-list))
 
-  (for ([row triangle])
-    (displayln row))
-  (display "\n")
-
   (define dp (get-dp triangle))
 
   (triangle-set! dp [list 0 0]
                  (triangle-ref triangle [list 0 0]))
 
-  (for ([row dp])
-    (displayln row))
-
   (for* ([(row i) (in-indexed (drop-right dp 1))]
-         [(elem j) (in-indexed row)])
+         [j (vector-length row)])
 
     (when (< (+ (triangle-ref dp [list i j])
                 (triangle-ref triangle [list (add1 i) j]))
@@ -56,6 +49,10 @@
 
       (triangle-set! dp [list (add1 i) (add1 j)]
                      (+ (triangle-ref dp [list i j])
-                        (triangle-ref triangle [list (add1 i) (add1 j)]))))))
+                        (triangle-ref triangle [list (add1 i) (add1 j)])))))
+
+  (apply min (vector->list (last dp))))
 
 (minimum-total '((2) (3 4) (6 5 7) (4 1 8 3)))
+
+(minimum-total '((-10)))
